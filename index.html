@@ -191,9 +191,34 @@ const DEFAULT_MENU=[
  {id:8,name:"Bakwan",price:2000,cat:"Snack",active:true},
  {id:9,name:"Buras",price:3000,cat:"Makanan",active:true}
 ];
-let menu=JSON.parse(localStorage.getItem("bum_menu")||"null")||DEFAULT_MENU;
+let menu=[];
 let sales=JSON.parse(localStorage.getItem("bum_sales")||"[]");
+
+async function loadMenuFromSupabase(){
+  const {data,error}=await supabaseClient
+    .from("menu_items")
+    .select("id,name,price,active,categories(name)")
+    .order("id");
+
+  if(error){
+    console.error("Gagal mengambil menu Supabase:",error);
+    menu=JSON.parse(localStorage.getItem("bum_menu")||"null")||DEFAULT_MENU;
+  }else{
+    menu=data.map(x=>({
+      id:x.id,
+      name:x.name,
+      price:Number(x.price),
+      cat:x.categories?.name||"Makanan",
+      active:x.active
+    }));
+  }
+
+      renderAll();
+  }
+loadMenuFromSupabase();
+
 let cart=[],filter="Semua",editId=null;
+
 
 const $=id=>document.getElementById(id), rp=n=>"Rp"+Number(n||0).toLocaleString("id-ID");
 function saveAll(){localStorage.setItem("bum_menu",JSON.stringify(menu));localStorage.setItem("bum_sales",JSON.stringify(sales))}
