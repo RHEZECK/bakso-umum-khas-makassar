@@ -50,6 +50,15 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
 #printReceipt{display:none}
 </style>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://bzxzrbwcknldsltwlpzf.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_DylcsaIILByEQhUe785c5A_67bCPEmJ";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+</script>
 </head>
 <body>
 
